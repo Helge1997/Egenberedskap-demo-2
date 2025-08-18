@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Egenberedskap – full demo</title>
+<style>
+:root {
+  --bg:#f4fbf5; --fg:#12321a; --accent:#cfe7d5; --accent-2:#7cc49a; --border:#cfe7d5;
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:var(--bg); color:var(--fg);}
+header { position:sticky; top:0; z-index:10; background:#fff; border-bottom:1px solid var(--border); padding:10px; display:flex; align-items:center; gap:10px; }
+.logo { height:40px; width:auto; }
+.title { font-weight:700; font-size:18px; flex:1; }
+main { padding:12px; max-width:1200px; margin:0 auto; }
+.btn { background:var(--accent); border:none; border-radius:10px; padding:10px 14px; cursor:pointer; font-weight:600; }
+.btn:active { transform:translateY(1px); }
+.row-btns { display:flex; gap:10px; flex-wrap:wrap; }
+.table { width:100%; border-collapse:collapse; background:#fff; border-radius:10px; overflow:hidden; }
+th, td { border:1px solid var(--border); padding:8px 10px; font-size:14px; text-align:left; vertical-align:top; }
+thead th { background:#eef9f0; position:sticky; top:62px; z-index:5; }
+.cat-row td { background:#eef9f0; font-weight:700; }
+.sub-row { background:#f9fdf9; border-left:3px solid var(--accent); display:none; }
+.accordion-toggle { cursor:pointer; user-select:none; }
+.checked { background:#d9f5dd !important; }
+.sumline { display:flex; gap:18px; align-items:center; justify-content:flex-end; margin-top:12px; padding:10px; background:#fff; border:1px solid var(--border); border-radius:10px; font-weight:700; }
+.badge { display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:999px; background:#eef9f0; border:1px solid var(--border); }
+.icon { font-size:16px; }
+.hidden { display:none; }
+.note { color:#3a6a49; font-size:13px; margin:8px 0 16px; }
+</style>
+</head>
+<body>
+<header>
+  <img src="generated_image (1).png" alt="Logo" class="logo">
+  <div class="title">Egenberedskap</div>
+  <button class="btn" onclick="goHome()">🏠 Hjem</button>
+</header>
+<main id="app"></main>
+
+<script>
+const data = [{"name": "Informasjon", "articles": [{"nr": "4.2", "navn": "Notatblokk og blyant", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "4.3", "navn": "Kart", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "4.4", "navn": "Kompass", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "4.5", "navn": "Reflexvest", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "4.6", "navn": "Legitimasjon ID,Pass", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "4.7", "navn": "Kontanter små seddler", "antall": "1000", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "4.8", "navn": "Klokke", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "4.9", "navn": "Mobil telefon", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}]}, {"name": "Legemidler og hygiene", "articles": [{"nr": "3.1", "navn": "Hånddesinfeksjon, våtserviett", "antall": "6", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2", "navn": "Førstehjelpspose", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.1", "navn": "Turnike ", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.2", "navn": "Gummihansker", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.3", "navn": "Munn til munn duk", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.4", "navn": "Redningsteppe - folie", "antall": "2", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.5", "navn": "Plaster div størrelser", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.6", "navn": "Sårservietter - desiniserende", "antall": "4", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.7", "navn": "Vanntett plastermappe (mindre sår og blødninger)", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.8", "navn": "Gnagsår plaster (Compeed el.)", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.9", "navn": "Brannsår gele", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.10", "navn": "Mitella (støtte arm v/ brudd)", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.11", "navn": "Kompresser", "antall": "3", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.12", "navn": "Gasbind / elastisk bind", "antall": "3", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.13", "navn": "Sår saks", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.14", "navn": "Pinsett", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.15", "navn": "Tabletter Ibux", "antall": "5", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.16", "navn": "Tabletter Paracet", "antall": "5", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.2.17", "navn": "Allergi tabletter", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.3", "navn": "Medikamenter personlig", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.4", "navn": "Såpe", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.5", "navn": "Tannbørste og tannkrem", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "3.6", "navn": "Håndkle", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}]}, {"name": "Mat og vann", "articles": [{"nr": "1.1", "navn": "Vannflaske", "antall": "1", "leverandor": "0,8l skrukork", "type": "Standard", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.2", "navn": "Vannrense sett", "antall": "1", "leverandor": "", "type": "Life straw", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.3", "navn": "Tørrmatpakke", "antall": "4", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.3.1", "navn": "Middag - Drytec ", "antall": "2", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.3.2", "navn": "Frokost - Drytec", "antall": "2", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.3.3", "navn": "Sjokolade - Koke/ mørk", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.3.4", "navn": "Kjeks", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.3.5", "navn": "Kakao drikk pulver", "antall": "2", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.3.6", "navn": "Kaffe drikk pulver", "antall": "2", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.4", "navn": "Skje/ gaffel plast", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "1.5", "navn": "Multiverktøy", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}]}, {"name": "Varme og lys", "articles": [{"nr": "2.1", "navn": "Kokeapparat", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.2", "navn": "Propan beholder", "antall": "1", "leverandor": "Fjellsport", "type": "MSR 100g", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.3", "navn": "Brann starter", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.4", "navn": "Sovepose", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.5", "navn": "Dunjakke tynn m.hette", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.6", "navn": "Super undertøy sett", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.7", "navn": "Sokker ull, lange", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.8", "navn": "Liggeunderlag oppb.", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.9", "navn": "Vindsekk", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.10", "navn": "Nylon cord 4mm", "antall": "15", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.11", "navn": "Hodelykt 1000lm", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.12", "navn": "Power bank 20 000maph", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.13", "navn": "Solcellepanel 20w", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}, {"nr": "2.14", "navn": "Multikabel lading", "antall": "1", "leverandor": "", "type": "", "vekt": 0, "oppgradering": "", "beskrivelse": "", "pris": 0, "vekt_tillegg": 0}]}];
+
+// Hjem (forside)
+function goHome() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <h2>Velg tema</h2>
+    <p class="note">Forflytning viser data fra Excel. Hjemme og Bil er satt opp med samme struktur og kan fylles i neste steg.</p>
+    <div class="row-btns">
+      <button class="btn" onclick="showTheme('Forflytning')">Egenberedskap forflytning</button>
+      <button class="btn" onclick="showTheme('Hjemme')">Egenberedskap hjemme</button>
+      <button class="btn" onclick="showTheme('Bil')">Egenberedskap transport i bil</button>
+    </div>
+  `;
+}
+
+// Velg tema
+function showTheme(theme) {
+  const app = document.getElementById('app');
+  if (theme === 'Forflytning') {
+    renderTable(app, data);
+  } else if (theme === 'Hjemme' || theme === 'Bil') {
+    renderTable(app, []);
+  }
+}
+
+// Bygg tabell
+function renderTable(container, dataset) {
+  let html = `
+    <table class="table">
+      <thead><tr>
+        <th></th><th>Nr</th><th>Navn</th><th>Antall</th><th>Leverandør</th>
+        <th>Type</th><th>Vekt (g)</th><th>Oppgradering</th><th>Beskrivelse</th>
+        <th>Pris (kr)</th><th>Tillegg vekt (g)</th><th>✔</th>
+      </tr></thead><tbody>`;
+  if (dataset.length === 0) {
+    html += `<tr><td colspan="12" style="text-align:center;color:#666;">Ingen data tilgjengelig</td></tr>`;
+  } else {
+    dataset.forEach(cat => {
+      html += `<tr class="cat-row"><td colspan="12">${cat.name}</td></tr>`;
+      cat.articles.forEach(a => {
+        const isSub = a.nr.split('.').length > 2;
+        const hasChildren = dataset.some(c=>c.articles.some(x=>!x.nr.startsWith(a.nr) ? false : (x.nr !== a.nr && x.nr.startsWith(a.nr + '.'))));
+        const toggle = (!isSub && hasChildren) ? `<span class="accordion-toggle" onclick="toggleSub('${a.nr}', this)">▶</span>` : '';
+        html += `<tr class="${isSub ? 'sub-row' : ''}" data-nr="${a.nr}" data-parent="${isSub ? a.nr.split('.').slice(0,2).join('.') : ''}">
+          <td>${toggle}</td>
+          <td>${a.nr}</td>
+          <td>${a.navn}</td>
+          <td>${a.antall}</td>
+          <td>${a.leverandor}</td>
+          <td>${a.type}</td>
+          <td>${fmtNum(a.vekt)}</td>
+          <td>${a.oppgradering}</td>
+          <td>${a.beskrivelse}</td>
+          <td>${fmtNum(a.pris)}</td>
+          <td>${fmtNum(a.vekt_tillegg)}</td>
+          <td><input type="checkbox" onchange="toggleCheck(this, '${a.nr}')"></td>
+        </tr>`;
+      });
+    });
+  }
+  html += `</tbody></table>
+  <div class="sumline">
+    <span class="badge"><span class="icon">💰</span> Sum pris: <span id="sumPris">0</span> kr</span>
+    <span class="badge"><span class="icon">⚖️</span> Sum vekt: <span id="sumVekt">0</span> g</span>
+  </div>`;
+  container.innerHTML = html;
+  restoreChecks();
+  updateSum();
+}
+
+// Formatter tall (heltall)
+function fmtNum(n) {
+  if (isNaN(n) || n === null || n === '') return '';
+  return Math.round(Number(n));
+}
+
+// Accordion
+function toggleSub(prefix, el) {
+  document.querySelectorAll('tr[data-parent="'+prefix+'"]').forEach(tr => {
+    const show = (tr.style.display === '' || tr.style.display === 'none');
+    tr.style.display = show ? 'table-row' : 'none';
+  });
+  if (el) el.textContent = (el.textContent === '▶' ? '▼' : '▶');
+}
+
+// Avhuking og lagring
+function toggleCheck(cb, nr) {
+  let state = JSON.parse(localStorage.getItem('checkedItems') || '{}');
+  state[nr] = cb.checked;
+  localStorage.setItem('checkedItems', JSON.stringify(state));
+  if (cb.checked) cb.closest('tr').classList.add('checked');
+  else cb.closest('tr').classList.remove('checked');
+  updateSum();
+}
+
+function restoreChecks() {
+  let state = JSON.parse(localStorage.getItem('checkedItems') || '{}');
+  document.querySelectorAll('tbody tr').forEach(tr => {
+    const nr = tr.getAttribute('data-nr');
+    if (state[nr]) {
+      tr.classList.add('checked');
+      const box = tr.querySelector('input[type=checkbox]');
+      if (box) box.checked = true;
+    }
+  });
+}
+
+// Summering i bunn
+function updateSum() {
+  let state = JSON.parse(localStorage.getItem('checkedItems') || '{}');
+  let sumPris = 0, sumVekt = 0;
+  document.querySelectorAll('tbody tr').forEach(tr => {
+    const nr = tr.getAttribute('data-nr');
+    if (nr && state[nr]) {
+      const tds = tr.querySelectorAll('td');
+      const pris = parseFloat(tds[9].textContent.replace(',', '.')) || 0;
+      const vekt = parseFloat(tds[6].textContent.replace(',', '.')) || 0;
+      const vtil = parseFloat(tds[10].textContent.replace(',', '.')) || 0;
+      sumPris += pris;
+      sumVekt += (vekt + vtil);
+    }
+  });
+  document.getElementById('sumPris').textContent = Math.round(sumPris);
+  document.getElementById('sumVekt').textContent = Math.round(sumVekt);
+}
+
+goHome();
+</script>
+</body>
+</html>
